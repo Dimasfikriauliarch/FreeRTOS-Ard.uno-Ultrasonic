@@ -1,30 +1,30 @@
-#include <Arduino_FreeRTOS.h>
-#include <semphr.h>
+#include <Arduino_FreeRTOS.h> 
+#include <semphr.h> // mekanisme pensinyalan // variable integer
 #include <task.h>
 #include<LiquidCrystal.h>
 #include <Servo.h>
-//Define LCD pins
-LiquidCrystal lcd (7,6,5,4,3,2); //RS, E, D4, D5, D6, D7
+
+LiquidCrystal lcd (7,6,5,4,3,2); //RS, E, D4, D5, D6, D7 lcd pin
 
 SemaphoreHandle_t sem; // handler untuk semaphore
 
 //servo
-#define servo 8
+#define servo 8 // D8
 Servo servo1;
 int pos = 0;
 
 
 // Ultrasonik1
-const int trigger1 = 9;
-const int echo1 = 10;
-long duration;
-int distance;
+const int trigger1 = 9; //Variable Global 
+const int echo1 = 10;   
+long duration; 
+int distance; // vGlobal
 
 // Ultrasonik 2
-const int trigger2 = 11;
+const int trigger2 = 11; 
 const int echo2 = 12;
 long duration2;
-int distance2;
+int distance2; // Variable Global
 
 
 TaskHandle_t Ultrasonic2task;   // task handler
@@ -40,7 +40,7 @@ void setup()
  
   lcd.begin(16, 2);// Enable LCD library
   
-  pinMode(trigger1, OUTPUT);
+  pinMode(trigger1, OUTPUT); // i/o pin ultrasonik
   pinMode(echo1, INPUT);
   pinMode(trigger2, OUTPUT);
   pinMode(echo2, INPUT);
@@ -61,7 +61,7 @@ void setup()
               2, // Priority, Sensor Ultrasonic 1 
               &Ultrasonic1task);  
 
- sem = xSemaphoreCreateCounting(1,1); // menggunakan semaphore create counting
+ sem = xSemaphoreCreateCounting(1,1); // menggunakan semaphore create counting, dgn default 1 memory heap
    vTaskStartScheduler();
 }
 
@@ -86,7 +86,7 @@ void Task1(void *pvParameters)
   
   duration2 = pulseIn(12, HIGH); 
   distance2 = duration2 *0.10/2;  // Untuk Awal Range Sensor Ultra 
-  xSemaphoreTake(sem, portMAX_DELAY); //acquire the semaphore
+  xSemaphoreTake(sem, portMAX_DELAY); //Mendapatkan semaphore
         lcd.setCursor(0,0);   //display lcd
         lcd.print("Jarak Sensor 2:");
         lcd.setCursor(6,1);
@@ -108,7 +108,7 @@ void Task1(void *pvParameters)
           servo1.write(180); // servo bergerak ke 180derajat
         }
         
-        xSemaphoreGive(sem); //release the semaphore
+        xSemaphoreGive(sem); // melepaskan semaphore
          vTaskDelay(1);
   }
 
@@ -133,7 +133,7 @@ void Task2(void *pvParameters)
   
   duration = pulseIn(10, HIGH); 
   distance = duration *0.034/2; 
-  xSemaphoreTake(sem, portMAX_DELAY); //acquire the semaphore
+  xSemaphoreTake(sem, portMAX_DELAY); //mendapatkan semaphore
         lcd.setCursor(0,0);   //display on the lcd
         lcd.print("Jarak Sensor 1:");
         lcd.setCursor(6,1);
@@ -155,7 +155,7 @@ void Task2(void *pvParameters)
           servo1.write(0);
         }
         
-        xSemaphoreGive(sem); //release the semaphore
+        xSemaphoreGive(sem); //melepaskan semaphore
          vTaskDelay(1);
   }
 
