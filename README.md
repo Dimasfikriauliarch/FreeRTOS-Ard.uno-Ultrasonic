@@ -1,3 +1,4 @@
 # FreeRTOS-Ard.uno-Ultrasonic
-// Program in Arduino IDE, Visual Studio 
-// Running Program in Proteus8 Design 
+Dalam proyek ini, menggunakan proteus sebagai simulasi nya dengan asumsi ketika ultrasonic mendeteksi jarak 8cm< dan 8cm> , maka servo akan bergerak ke 180 dejarat dan sebaliknya.
+tugas Ultrasonik di mana menghitung jarak rintangan. Kedua tugas ini menggunakan satu sumber daya untuk menampilkan data yaitu LCD. Semafor digunakan untuk memastikan bahwa hanya satu tugas pada satu waktu yang menggunakan LCD untuk menampilkan data. Menggunakan semafor juga memastikan sinkronisasi tugas. Pertama, tugas ultrasonic 1 memperoleh semaphore, dan menampilkan nilai pada LCD. Sebelum tugas ultrasonic 1 berakhir, ia melepaskan semaphore. Sekarang kontrol berpindah ke tugas ultrasonik 2. Ia memperoleh semaphore, menghitung jarak dan mengirimkannya ke LCD untuk ditampilkan. Seluruh proses berulang dan memberikan data waktu nyata dari sensor ultrasonik. 
+ 
